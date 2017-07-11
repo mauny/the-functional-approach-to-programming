@@ -4,7 +4,9 @@ This repository contains the programs that are used in the books:
         by Guy Cousineau and Michel Mauny
         Cambridge University Press
         ISBN: 0 521 57183 9 (Hardback), SBN: 0 521 57681 4 (Paperback)
+
 and
+
         Approche Fonctionnelle de la Programmation
         by Guy Cousineau and Michel Mauny
         Ediscience International, Collection Informatique
