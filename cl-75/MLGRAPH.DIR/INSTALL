@@ -1,0 +1,150 @@
+
+               INSTALLING MLGRAPH LIBRARY FOR CAMLLIGHT
+
+
+
+I   - FROM A COMPLETE DISTRIBUTION (ON A UNIX SYSTEM)
+II  - TESTING MLGRAPH
+III - UNINSTALLING MLGRAPH
+IV  - FROM A BINARY DISTRIBUTION (ON A UNIX, DOS, WINDOWS 95/NT, MAC, SYSTEM)
+
+I - FROM A COMPLETE DISTRIBUTION (ON A UNIX SYSTEM) : 
+
+1- Edit the file Makefile. Change the variable definitions at
+the beginning of the Makefile, to indicate which Caml compiler (MLC) to use,
+and where to install files (LIBDIR). See the machine-specific hints at the end
+of this file.
+
+2- If you select another directory than the Caml-light standard directory
+   (/usr/local/lib/caml-light), then 
+
+   a - edit the file prelude.ml and change  the variable 
+       graphics_directory to indicate the good directory.
+
+   b - edit the file mlgraph.ml and change the string value 
+       directory_concat_string and the string argument given to 
+       change_graphics_directory function.
+
+
+3- From the working directory, do: 
+
+     make library
+
+
+4- If you want to use the shell script mlpictex (which runs automatically
+   the toplevel Caml and MLgraph), you need too to indicate the good 
+   directory. Edit the file mlpictex and change the variable definition 
+   CAMLLIBDIR.
+
+
+5- You can now install the MLgraph library. This will create the following
+   files and directories (in the directory set to LIBDIR in Makefile): 
+
+       MLgraph.zo   : the library object file
+       MLgraph.zi   : the library object interface file
+       mlgraph.ml   : the include file
+       MLgraph.lib  : the informations directory
+                       which includes three  subdirectories : 
+         Bin : commands directory
+         Fonts : informations about fonts
+         Headers : headers for PostScript and LaTeX
+         Lib : headers and font descriptions in ML
+
+   From the working directory do : 
+
+       make install   
+     
+
+   
+6- Installation is complete. Time to clean up.
+
+   From the working directory do :
+
+       make clean
+
+
+
+
+II - TESTING MLGRAPH 
+
+1- From the working directory : 
+
+   load a camllight session.
+
+2- Do : 
+  
+   include "mlgraph.ml";;
+
+3- Load : 
+
+     load "visages";;
+
+4- You can visualize the PostScript file visages.ps. 
+
+
+If  something goes wrong :
+
+1- If you cann't load the library MLgraph.zo when you include it : 
+   
+   a- Check if files MLgraph.zo and MLgraph.zi exist.
+
+   b- Be sure to have the same camllight version between the camllight
+      batch  compiler and interactive toplevel.
+
+2- If you cann't read files from  MLgraph.lib directory :
+
+   a- Check the variable directory_concat_string in the file mlgraph.ml
+
+   b Check the change_graphics_directory argument (i.e. the MLgraph library 
+   directory) in the file mlgraph.ml. 
+  
+4- If you cann't write the PostScript file : 
+
+   a- Check your rights on this directory.
+
+
+5- If you cann't visualise the PostScript file /tmp/visages.ps, 
+   
+   a- Check the visages.ps file size (about 7Kb).
+
+ 
+In a desesperate case, you can write to the authors at the following 
+address :  mlgraph@ens.fr
+
+
+III - UNINSTALLING MLGRAPH  
+
+1- Go to the working directory, and do : 
+
+       make uninstall 
+
+
+
+IV  - FROM A BINARY DISTRIBUTION (ON A UNIX, DOS, MAC SYSTEM)
+
+
+1- Edit the file mlgraph.ml and change the string value 
+   directory_concat_string and the string argument given to 
+   change_graphics_directory function. 
+
+   
+   
+2- Copy  the following files and directories to the directory indicated 
+   in the file mlgraph.ml : 
+
+
+       MLgraph.zo   : the library object file
+       MLgraph.zi   : the library object interface file
+       mlgraph.ml   : the include file
+       MLgraph.lib  : the informations directory
+                       which includes three  subdirectories : 
+         Bin : commands directory
+         Fonts : informations about fonts
+         Headers : headers for PostScript and LaTeX
+         Lib : headers and font descriptions in ML
+
+
+3- goto II (TESTING MLGRAPH)
+
+
+

@@ -1,0 +1,48 @@
+Ces repertoires contiennent les programmes Caml-Light des ouvrages:
+
+        Approche Fonctionnelle de la Programmation
+        de Guy Cousineau et Michel Mauny
+        Ediscience International, Collection Informatique
+        ISBN 0989-392-X
+et
+        The Functional Approach to Programming with Caml
+        by Guy Cousineau and Michel Mauny
+        Cambridge University Press
+        ISBN: 0 521 57183 9 (Hardback), SBN: 0 521 57681 4 (Paperback)
+
+
+Quelques legeres modifications ont du etre apportees au texte original
+des programmes contenus dans le livre. Ces modifications correspondent
+quelquefois a des corrections d'erreurs, mais ont, pour la plupart
+d'entre elles, ete apportees afin de rester compatibles avec les
+dernieres versions de Caml-Light.
+
+Cette distribution (0.3) est complete. Chaque repertoire donne acces
+aux programmes de chaque chapitre du livre, et le repertoire Util
+contient des programmes communs a tous ces chapitres.
+
+Pour se placer dans l'environnement fourni dans un chapitre, se placer
+dans le repertoire associe au chapitre en question, lancer
+Caml-Light, et evaluer:
+
+        include "load";;
+
+qui provoquera le chargement du fichier `load.ml'.
+
+
+INSTALLATION
+
+Compilation des fichiers ML contenus dans ces repertoires.
+
+Executez simplement `make all' a la racine de cette distribution
+(probablement le repertoire courant si vous lisez ce fichier), sur une
+machine disposant du compilateur Caml-Light (version 0.6 ou 0.7).
+
+Si vous desirez reconstruire les images apparaissant dans le livre,
+executez `make pictures' sur une machine disposant de Caml-Light et de
+la bibliotheque MLgraph. Vous ne devriez pas avoir besoin de
+reconstruire ces images, et, pour le moment, nous ne fournissons
+aucune aide a` ce sujet.
+
+                                        Guy.Cousineau@ens.fr
+                                        Michel.Mauny@inria.fr

@@ -1,0 +1,160 @@
+%*                                                                       *
+%*                     Projet      Formel                                *
+%*                                                                       *
+%*                 Interface LaTeX -- MLgraph                            *
+%*                                                                       *
+%*************************************************************************
+%*                                                                       *
+%*                            LIENS                                      *
+%*                        45 rue d'Ulm                                   *
+%*                         75005 PARIS                                   *
+%*                            France                                     *
+%*                                                                       *
+%*************************************************************************
+%
+%
+% $Id: MLgraph.tex.p,v 1.4 1997/08/31 20:05:43 emmanuel Exp $
+%*  MLgraph.tex  A interface between MLgraph and LaTeX                  *
+%*               Ascander Suarez                                        *
+%                Mon Apr 26 1993                                        *
+%                                                                       *
+%                modified by Emmanuel Chailloux                         *
+%                    (thanks to Roberto Dicosmo for his help)           *
+%                Wed Dec 18 1996
+% Usage:
+%   \input{MLgraph}
+%   \begin{mlPic}
+%      \mlOpen{fa}
+%      \mlOpen{fb}
+%      \mlDir{da}
+%      \mlDir{db}
+%      \mlDef{a}{First LaTeX text}
+%      \mlDef{b}{Second LaTeX text}
+%      etc.
+%      \mlBody{p}{ 
+%          Your MLgraph picture which might use latexBox"a",latexBox"b",etc.
+%          of type MLgraph__picture
+%      }
+%      \end{mlPic}
+%
+%Supposes that your LaTeX file uses the TeX box declaration conventios
+\newcount{\mlBoxCount}\newtoks{\mlToks}\newread{\mlRead}\newlength{\mlLen}
+\makeatletter
+\def\makeMlPicTex{\if@filesw \newwrite\@mlwritefile
+  \immediate\openout\@mlwritefile=\jobname.pic/\jobname.ml
+  \mlwrite%
+  {(****************************************************************}%
+  \mlwrite%
+  { *                                                               }%
+  \mlwrite%
+  { * File \jobname.pic/\jobname.ml created by  MLgraph v2.1 from \jobname.tex   }%
+  \mlwrite%
+  { *                                                               }%
+  \mlwrite%
+  { ****************************************************************)}%
+  \mlwrite{ }%
+  \mlwrite{include "mlgraph.ml";;}
+  \mlwrite{picDir:="\jobname.pic";;}
+  \mlwrite{set_latex_mode ();;}
+%  \mlwrite{let addLatexBox lb = latexBoxTable:=!latexBoxTable@[lb];;}
+  \mlwrite{ }%
+  \typeout
+  {Writing MlPicTeX file \jobname.pic/\jobname.ml }\fi}
+ 
+\def\@wrmlwrite#1{\let\thepage\relax
+   \edef\@tempa{\write\@mlwritefile{\string #1}}\expandafter\endgroup\@tempa
+   \if@nobreak \ifvmode\nobreak\fi\fi\@esphack}
+  \def\mlwrite{\@bsphack\begingroup\@sanitize\@wrmlwrite}
+\makeatother
+% \mlDef{name}{text} defines a value (latexBox"name") of type MLgraph__picture
+% which can be used as part of the resulting picture
+\newcommand{\mlDef}[2]{% Declaration of horizontal boxes
+    \advance\mlBoxCount by 1%
+    \setbox\mlBoxCount=\hbox{#2}%
+  \mlwrite%
+  {(****************************************************************}%
+  \mlwrite%
+  { *  building box  : #1}%
+  \mlwrite%
+  { ****************************************************************)}%
+    \mlwrite%
+{add_latexBox (("#1",\the\mlBoxCount,"\the\wd\mlBoxCount","\the\ht\mlBoxCount","\the\dp\mlBoxCount"));;}}%%%%%%%%%%::!latexBoxTable;}}
+\newcommand{\mlOpen}[1]{%
+	\mlwrite{##open #1;;}%
+%	\mlwrite{open #1;;}%
+        \mlwrite{load_object #1;;}%
+}%
+\newcommand{\mlDir}[1]{%
+	\mlwrite{\#}%
+	\mlwrite{#1;;}%
+}%
+\newcommand{\mlDefGen}[3]{% Declaration of horizontal boxes
+    \advance\mlBoxCount by 1%
+    \setbox\mlBoxCount=\hbox{#3}%
+    \mlwrite%
+{latexBoxTable:=!latexBoxTable@[(latexPictureGen #2 ("#1",\the\mlBoxCount,"\the\wd\mlBoxCount","\the\ht\mlBoxCount","\the\dp\mlBoxCount"))];;}}%
+\newcommand{\mlDefBox}[2]{% Inclusion of an existent box
+    \mlwrite%
+{latexBoxTable:=!latexBoxTable@[(latexPicture("#1",\the#2,"\the\wd#2","\the\ht#2","\the\dp#2"))];;}}%
+\newcommand{\mlVDef}[2]{%  Declaration of vertical boxes
+    \advance\mlBoxCount by 1%
+    \setbox\mlBoxCount=\vbox{#2}%
+    \mlwrite%
+{latexBoxTable:=!latexBoxTable@[latexPicture("#1",\the\mlBoxCount,"\the\wd\mlBoxCount","\the\ht\mlBoxCount","\the\dp\mlBoxCount")];;}}%
+% Expression of type MLgraph__picture that describes the picture
+\newcommand{\mlBody}[2]{\mlToks={\jobname.pic/#1.tex}%
+  \mlwrite{ }
+  \mlwrite%
+  {(****************************************************************}%
+  \mlwrite%
+  { * building picture #1 }
+  \mlwrite%
+  { ****************************************************************)}%
+  \mlwrite{ }
+%   \mlwrite{let latexBox s = fst(assoc s !latexBoxTable) }%
+%   \mlwrite{and latexBoxes = map (fun (s,(p,_)) -> (s,p)) !latexBoxTable }%
+%   \mlwrite{in }%
+   \mlwrite{ let mlGraphPicture = }%
+   \mlwrite{  #2 }%
+   \mlwrite{  in makeLatexPicture mlGraphPicture !latexBoxTable "#1";; }%
+}
+% initializations for MLgraph pictures
+\newenvironment{mlPic}{%
+  \mlBoxCount=\the\count14% the box counter
+   \mlwrite{(*--------- mlPic Description output ---------*)}%
+   \mlwrite{ }%
+  \mlwrite%
+  {(****************************************************************}%
+  \mlwrite%
+  { * starting a new picture}%
+  \mlwrite%
+  { ****************************************************************)}%
+  \mlwrite{ }%
+   \mlwrite{empty_latexBoxTable ();;}%
+   \mlwrite{ }%
+ }{%
+  \mlwrite{ }%
+  \mlwrite{(*------End of mlPic description output ------*)}%
+  \mlwrite{ }%
+\mlReadFun{\the\mlToks}}
+\newcommand{\mlReadFun}[1]{\openin\mlRead=#1
+\ifeof\mlRead\closein\mlRead\message{#1\space is empty}%
+\else{\closein\mlRead}\setlength{\mlLen}{\unitlength}%
+\setlength{\unitlength}{1pt}\input{#1}%
+\setlength{\unitlength}{\mlLen}\fi}
+\newcommand{\mlPut}[3]{\put#1{\special{ps:gsave currentpoint currentpoint translate [ #2 0 0]concat neg exch neg exch translate}#3\special{ps:grestore}}}
+\newcommand{\mlPutg}[4]{\put#1{\special{ps:gsave currentpoint currentpoint translate [ #2 0 0]concat neg
+exch neg exch translate #3 setgray }#4\special{ps:grestore}}}
+\newcommand{\mlPutrgb}[4]{\put#1{\special{ps:gsave (start) ==
+[1 0 0 1 0 0 ] defaultmatrix ==
+currentpoint [1 0 0 1 0 0] currentmatrix
+initmatrix
+currentpoint translate
+[1 0 0 1 0 0] currentmatrix ==
+#3
+setrgbcolor  setmatrix moveto  currentpoint currentpoint translate [ #2 0 0]
+concat neg exch neg exch translate  }#4\special{ps:grestore}}}
+\newcommand{\mlPuthsb}[4]{\put#1{\special{ps:gsave currentpoint currentpoint translate [ #2 0 0]concat neg exch neg exch translate #3 sethsbcolor }#4\special{ps:grestore}}}
+\newcommand{\mlPutgen}[4]{\put#1{\special{ps:gsave  currentpoint [1 0 0 1 0 0] currentmatrix initmatrix currentpoint translate #3 setmatrix moveto  currentpoint currentpoint translate [ #2 0 0]
+concat neg exch neg exch translate}#4\special{ps:currentpoint grestore moveto}}}
+\makeMlPicTex

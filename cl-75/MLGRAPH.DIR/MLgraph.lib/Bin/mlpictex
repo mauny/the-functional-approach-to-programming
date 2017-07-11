@@ -1,0 +1,56 @@
+
+
+#!/bin/sh   
+
+Latex=latex
+CamlLibDir=/usr/local/lib/caml-light/
+
+CamlTop=camllight
+Caml="${CamlTop} -I ${CamlLibDir}"
+
+
+
+File=$1
+PicDir=${File}.pic
+MLFile=${PicDir}/${File}.ml
+OMLFile=${MLFile}.old
+TEXINPUTS=${CamlLibDir}/MLgraph.lib/Headers:${TEXINPUTS}
+export TEXINPUTS
+if [ ! -f ${File}.tex ]; then
+  echo "Unknown file : ${File}.tex "
+  exit 1
+fi
+
+if [ ! -d ${File}.pic ]; then
+  mkdir ${PicDir}
+  echo "directory ${PicDir} created"
+fi
+
+if [ -f ${MLFile} ]; then
+  mv ${MLFile} ${OMLFile}
+fi
+
+${Latex} $File
+
+if [ ! -f ${MLFile}  ]; then 
+exit 1
+fi
+
+if [ -f  ${OMLFile} ];then
+  if (cmp -s ${MLFile} ${OMLFile}); then 
+	echo "No change for ${MLFile}"
+	exit 0;
+  else  
+	echo "Running  ${CamlTop} for ${MLFile}"; 
+	${Caml} < ${MLFile}
+  fi
+else
+  echo "No previous version of ${MLFile}"
+  echo "Running ${CamlTop} for ${MLFile}"
+  ${Caml} < ${MLFile}
+fi
+${Latex} $File
+exit 0
+
+
+
