@@ -6,7 +6,9 @@ These directories contain the Caml-Light programs contained in the book:
         by Guy Cousineau and Michel Mauny
         Cambridge University Press
         ISBN: 0 521 57183 9 (Hardback), SBN: 0 521 57681 4 (Paperback)
+
 and
+
         Approche Fonctionnelle de la Programmation
         by Guy Cousineau and Michel Mauny
         Ediscience International, Collection Informatique
@@ -30,16 +32,16 @@ which will include the contents of the `load.ml' file in your
 Caml-Light session.
 
 
-INSTALLATION
+# INSTALLATION
 
 The following installation will compile all the ML files in this tree.
 
-Simply execute `make all' in the root directory of this distribution
+Simply execute `make all` in the root directory of this distribution
 (probably the directory where this file is), on a machine with
 Caml-Light (version 0.6 or 0.7) installed.
 
 If you want to rebuild the pictures occurring in the book, execute
-`make pictures', on a machine with Caml-Light and the MLgraph
+`make pictures`, on a machine with Caml-Light and the MLgraph
 library. You shouldn't need to do this, and, currently, we
 don't provide any support for that.
 
