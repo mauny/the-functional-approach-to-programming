@@ -1,0 +1,46 @@
+S MLgraph.lib/**
+B MLgraph.lib/**
+
+S Util
+B Util
+
+S Expr
+B Expr
+
+S Arbres
+B Arbres
+
+S Struct
+B Struct
+
+S Semant
+B Semant
+
+S Imper
+B Imper
+
+S Arith
+B Arith
+
+S Eval
+B Eval
+
+S Termes
+B Termes
+
+S Graphes
+B Graphes
+
+S Syntaxe
+B Syntaxe
+
+S Geom
+B Geom
+
+S Compil
+B Compil
+
+S Typage
+B Typage
+
+FLG -open Mlgraph -strict-sequence -strict-formats -short-paths -keep-locs
